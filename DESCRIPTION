@@ -1,0 +1,17 @@
+Package: EScrape
+Type: Package
+Title: Scrapes the NRM ESBase web interface
+Version: 0.1.0
+Author: Martin Sköld
+Maintainer: Martin Sköld <martin.skold@nrm.se>
+Description: Scrapes the NRM ESBase web interface.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Imports: 
+    dplyr,
+    purrr,
+    rvest,
+    stringr,
+    tibble
