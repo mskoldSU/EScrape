@@ -4,7 +4,7 @@
 \alias{ESB_read_accession}
 \title{Gets accession information}
 \usage{
-ESB_read_accession(con, accnr)
+ESB_read_accession(con, accnr, quietly = FALSE)
 }
 \arguments{
 \item{con}{A connection initiated by ESB_connect}

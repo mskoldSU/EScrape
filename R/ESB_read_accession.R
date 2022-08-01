@@ -11,11 +11,13 @@
 #' }
 #' @export
 
-ESB_read_accession <- function(con, accnr){
-  id <- ESB_accnr2id(accnr)
-  url <- paste0("http://esbase.nrm.se/accession?id=", id)
-  purrr::map_df(url, function(x){
-    page <- rvest::session_jump_to(con, x)
+ESB_read_accession <- function(con, accnr, quietly = FALSE){
+  if (quietly == FALSE)
+    cat("Progress: ")
+  purrr::map_df(accnr, function(x){
+    id <- ESB_accnr2id(x)
+    url <- URLencode(paste0("http://esbase.nrm.se/accession?id=", id))
+    page <- rvest::session_jump_to(con, url)
     entry <- tibble::tibble(
       catalog = rvest::html_node(page, css = "#table_catalog") |> rvest::html_text(),
       accnr = rvest::html_node(page, css = "#table_aid") |> rvest::html_attr("value"),
@@ -32,5 +34,7 @@ ESB_read_accession <- function(con, accnr){
       accession_note = rvest::html_node(page, css = "#table_Accession_Note") |> rvest::html_text()
     )
     entry
+    if (quietly == FALSE)
+      cat(paste0(x, " "))
   })
 }
