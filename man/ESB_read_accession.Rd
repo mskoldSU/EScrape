@@ -4,12 +4,16 @@
 \alias{ESB_read_accession}
 \title{Gets accession information}
 \usage{
-ESB_read_accession(con, accnr, quietly = FALSE)
+ESB_read_accession(con, accnr, quietly = FALSE, deg2dec = TRUE)
 }
 \arguments{
 \item{con}{A connection initiated by ESB_connect}
 
 \item{accnr}{An accession number}
+
+\item{quietly}{Suppress progress listing}
+
+\item{deg2dec}{Convert coordinates from base 60 to decimal degrees}
 }
 \value{
 A tibble

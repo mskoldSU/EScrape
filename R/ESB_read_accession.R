@@ -3,6 +3,8 @@
 #' Downloads the accession information of an individual from ESBase
 #' @param con A connection initiated by ESB_connect
 #' @param accnr An accession number
+#' @param quietly Suppress progress listing
+#' @param deg2dec Convert coordinates from base 60 to decimal degrees
 #' @return A tibble
 #' @examples
 #' \dontrun{
@@ -11,7 +13,7 @@
 #' }
 #' @export
 
-ESB_read_accession <- function(con, accnr, quietly = FALSE){
+ESB_read_accession <- function(con, accnr, quietly = FALSE, deg2dec = TRUE){
   if (quietly == FALSE)
     cat("Progress: ")
   purrr::map_df(accnr, function(x){
@@ -29,10 +31,12 @@ ESB_read_accession <- function(con, accnr, quietly = FALSE){
       found_circumstances = rvest::html_node(page, css = "#table_Accession_DiscoveryId") |> ESB_get_selected(),
       found_note = rvest::html_node(page, css = "#table_Accession_Description") |> rvest::html_text(),
       found_place = rvest::html_node(page, css = "#table_Accession_FindplaceNote") |> rvest::html_text(),
-      latitude = rvest::html_node(page, css = "#table_Latitude") |> rvest::html_attr("value") |> ESB_deg2dec(),
-      longitude = rvest::html_node(page, css = "#table_Longitude") |> rvest::html_attr("value") |> ESB_deg2dec(),
+      latitude = rvest::html_node(page, css = "#table_Latitude") |> rvest::html_attr("value"),
+      longitude = rvest::html_node(page, css = "#table_Longitude") |> rvest::html_attr("value"),
       accession_note = rvest::html_node(page, css = "#table_Accession_Note") |> rvest::html_text()
     )
+    if (deg2dec == TRUE)
+      entry = dplyr::mutate(entry, longitude = ESB_deg2dec(longitude), latitude = ESB_deg2dec(latitude))
     if (quietly == FALSE)
       cat(paste0(x, " "))
     entry
