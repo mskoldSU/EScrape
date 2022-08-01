@@ -33,8 +33,8 @@ ESB_read_accession <- function(con, accnr, quietly = FALSE){
       longitude = rvest::html_node(page, css = "#table_Longitude") |> rvest::html_attr("value") |> ESB_deg2dec(),
       accession_note = rvest::html_node(page, css = "#table_Accession_Note") |> rvest::html_text()
     )
-    entry
     if (quietly == FALSE)
       cat(paste0(x, " "))
+    entry
   })
 }
